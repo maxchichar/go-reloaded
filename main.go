@@ -1,10 +1,11 @@
 package main
 
 import (
-	// "bufio"
+	"bufio"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main()  {
@@ -27,19 +28,31 @@ func main()  {
 	}
 	defer file.Close()
 
-	// scanner := bufio.NewScanner(file)
+	var b strings.Builder
 
-	// if scanner.Scan() {
-	// 	scanner.Text()
-	// }
 
-	// if err := scanner.Err() ;err != nil {
-	// 	log.Fatal(err)
-	// }
+	scanner := bufio.NewScanner(file)
 
+	for scanner.Scan() {
+		b.WriteString(scanner.Text())
+		b.WriteString("\n")
+	}
+
+
+	if err := scanner.Err() ;err != nil {
+		log.Fatalln("Reading standard input:", err)
+	}
+
+	
 	file1, err := os.OpenFile(outputFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file1.Close()
+
+	_, err = file1.WriteString(b.String())
+	if err != nil {
+		log.Fatalf("Error writing content: %v", err)
+	}
+	
 }
