@@ -96,6 +96,22 @@ $ go run . sample.txt result.txt
 
 $ cat result.txt Punctuation tests are... kinda boring, what do you think?
 
+## Project Tree
+```
+go-reloaded/
+├── go.mod
+├── main.go
+├── functions/          # or helpers/  ← put your reused functions here
+│   ├── todec.go
+│   ├── case.go
+│   ├── punctuation.go
+│   ├── a_to_an.go
+│   ├── split.go
+│   └── ...
+├── sample.txt          # test inputs
+├── result.txt          # your output
+└── README.md
+```
 
 ## Learning Outcomes
 

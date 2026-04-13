@@ -1,9 +1,1 @@
-scanner := bufio.NewScanner(file)
-
-	// if scanner.Scan() {
-	// 	scanner.Text()
-	// }
-
-	// if err := scanner.Err() ;err != nil {
-	// 	log.Fatal(err)
-	// }
+Hello world 1010 (bin) test 1E (hex)
