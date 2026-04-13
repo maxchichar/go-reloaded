@@ -18,6 +18,11 @@ func main()  {
 	inputFile := os.Args[1]
 	outputFile := os.Args[2]
 
+	if (!(strings.HasSuffix(inputFile, ".txt"))) || (!(strings.HasSuffix(outputFile, ".txt"))){
+		fmt.Println("✗ File name has to end with .txt")
+		os.Exit(1)
+	}
+
 	if inputFile == outputFile{
 		fmt.Println("✗ File name cannot be the same")
 		os.Exit(1)
@@ -49,6 +54,7 @@ func main()  {
 	// === USE FUNCTIONS FROM PACKAGE ===
 	tokens := functions.SplitElement(fullContent)
 	tokens = functions.ProcessHexBin(tokens)
+	tokens = functions.ProcessCase(tokens)
 
 	finalContent := strings.Join(tokens, " ")
 	
