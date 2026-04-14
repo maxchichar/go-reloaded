@@ -36,22 +36,38 @@ func ProcessCase(tokens []string) []string {
 		current := tokens[i]
 
 		if isCaseMarker(current) {
+			cleaned := strings.ToLower(strings.Trim(current, "()"))
 			
-			var transform func(string) string
-			switch current {
-			case "up":
-				transform = to_upper
-				result = append(result, transform(tokens[i-1]))
-				i++
+			switch {
+			case strings.HasPrefix(cleaned, "up"):
+				if len(result) > 0{
+					lastWord := len(result) - 1
+					result[lastWord] = to_upper(result[lastWord])
+				}
 				continue
-			// case "low"
+
+			case strings.HasPrefix(cleaned, "low"):
+				if len(result) > 0 {
+					lastWord := len(result) - 1
+					result[lastWord] = to_lower(result[lastWord])
+				}
+				continue
+
+			case strings.HasPrefix(cleaned, "cap"):
+				if len(result) > 0{
+					lastIndex := len(result) - 1
+					result[lastIndex] = to_capitalise(result[lastIndex])
+				}
+				continue
 			}
+		} else {
+			result = append(result, current)
 		}
 	}
 	return result
 }
 
-// Checking for markers
+// Detecting markers like (up) (low) and (cap)
 func isCaseMarker(token string) bool {
 	if len(token) < 3{
 		return false
