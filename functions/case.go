@@ -1,9 +1,12 @@
 package functions
 
 import (
+	"strconv"
+	// "fmt"
 	"strings"
 )
 
+// To upper case function
 func to_upper(word string) string {
 	if len(word) == 0 {
 		return word
@@ -12,6 +15,7 @@ func to_upper(word string) string {
 	return strings.ToUpper(word)
 }
 
+// To lower case function
 func to_lower(word string) string {
 	if len(word) == 0 {
 		return word
@@ -20,7 +24,8 @@ func to_lower(word string) string {
 	return strings.ToLower(word)
 }
 
-func to_capitalise(word string) string {
+// To capitalise
+func to_cap(word string) string {
 	if len(word) == 0 {
 		return word
 	}
@@ -28,6 +33,7 @@ func to_capitalise(word string) string {
 	return strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
 }
 
+// For processing the upper, lower and capitalizing words with number
 func ProcessCase(tokens []string) []string {
 	result := make([]string, 0, len(tokens))
 
@@ -36,30 +42,29 @@ func ProcessCase(tokens []string) []string {
 		current := tokens[i]
 
 		if isCaseMarker(current) {
-			cleaned := strings.ToLower(strings.Trim(current, "()"))
-			
-			switch {
-			case strings.HasPrefix(cleaned, "up"):
-				if len(result) > 0{
-					lastWord := len(result) - 1
-					result[lastWord] = to_upper(result[lastWord])
-				}
-				continue
+			action, count := parseMarker(current)
+			// fmt.Printf("DEBUG Marker: %s → Action: %s, Count: %d\n", current, action, count)
 
-			case strings.HasPrefix(cleaned, "low"):
-				if len(result) > 0 {
-					lastWord := len(result) - 1
-					result[lastWord] = to_lower(result[lastWord])
-				}
-				continue
-
-			case strings.HasPrefix(cleaned, "cap"):
-				if len(result) > 0{
-					lastIndex := len(result) - 1
-					result[lastIndex] = to_capitalise(result[lastIndex])
-				}
+			var transform func(string) string
+			switch action {
+			case "up":
+				transform = to_upper // transform becomes the container for the uppercase function
+			case "low":
+				transform = to_lower // transform becomes the container for the lowerrcase function
+			case "cap":
+				transform = to_cap // transform becomes the container for the capitalize function
+			default:
+				result = append(result, current)
 				continue
 			}
+			for n := 0; n < count; n++ {
+				idx := len(result) - 1 - n
+				if idx < 0 {
+					break
+				}
+				result[idx] = transform(result[idx])
+			}
+			continue
 		} else {
 			result = append(result, current)
 		}
@@ -78,6 +83,9 @@ func isCaseMarker(token string) bool {
 	}
 
 	cleaned := strings.ToLower(strings.Trim(token, "()"))
+	// if cleaned == "up" || cleaned == "low" || cleaned == "cap" {
+	// 	return true
+	// }
 	if strings.Contains(cleaned, "up") ||
 	strings.Contains(cleaned, "low") ||
 	strings.Contains(cleaned, "cap") {
@@ -87,6 +95,22 @@ func isCaseMarker(token string) bool {
 	return false
 }
 
-// func parseMarker(token string) bool {
+// Detecting markers like (up, 3) (low, 2)
+func parseMarker(token string) (string, int) {
+	cleaned := strings.ToLower(strings.Trim(token,"()"))
 
-// }
+	if strings.Contains(cleaned, ",") {
+		parts := strings.Split(cleaned, ",")
+
+		if len(parts) >= 2{
+			action := strings.TrimSpace(parts[0]) // represent the transformer e.g up low and cap
+			countStr := strings.TrimSpace(parts[1]) // represents the number
+			if count, err := strconv.Atoi(countStr); err == nil && count > 0 { // convert the string to int
+				return action, count
+			}
+			return action, 1
+		}
+		
+	}
+	return cleaned, 1
+}
