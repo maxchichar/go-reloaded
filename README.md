@@ -107,9 +107,9 @@ go-reloaded/
 │   ├── punctuation.go
 │   ├── a_to_an.go
 │   ├── split.go
-│   └── ...
-├── sample.txt          # test inputs
-├── result.txt          # your output
+│   └── quote.go
+├── input.txt          # test inputs
+├── output.txt          # your output
 └── README.md
 ```
 
