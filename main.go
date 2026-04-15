@@ -53,10 +53,14 @@ func main()  {
 
 	// === USE FUNCTIONS FROM PACKAGE ===
 	tokens := functions.SplitElement(fullContent)
-	tokens = functions.ProcessHexBin(tokens)
 	tokens = functions.ProcessCase(tokens)
+	tokens = functions.ProcessQuotes(tokens)
+	tokens = functions.ProcessHexBin(tokens)
+	tokens = functions.ProcessPunctuation(tokens)
+	tokens = functions.ProcessAnRule(tokens)
 
 	finalContent := strings.Join(tokens, " ")
+	//<=======================================>
 	
 	file1, err := os.OpenFile(outputFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
 	if err != nil {
