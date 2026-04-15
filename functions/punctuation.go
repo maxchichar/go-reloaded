@@ -6,18 +6,27 @@ import (
 ) 
 
 func ProcessPunctuation(tokens []string) []string {
-
-	good := strings.Join(tokens, " ")
-
+	
+	token := strings.Join(tokens, " ")
+	
 	re := regexp.MustCompile(`\s+([.,;!:?])`)
 	
-	good = re.ReplaceAllString(good, "$1")
+	token = re.ReplaceAllString(token, "$1")
 	
 	re2 := regexp.MustCompile(`([.,;!:?])(\s*)(\w)`)
 
-	result := re2.ReplaceAllString(good, "$1 $3")
-
+	result := re2.ReplaceAllString(token, "$1 $3")
+	
 	return strings.Fields(result)
+
+}
+
+
+
+
+
+
+// func ProcessPunctuation(tokens []string) []string {
 
 	// text := strings.Join(tokens, " ")
 
@@ -26,7 +35,7 @@ func ProcessPunctuation(tokens []string) []string {
 
 	// // Handle colon
 	// text = regexp.MustCompile(`\s*:\s*`).ReplaceAllString(text, ": ")
-	
+
 	// // Handle Punctuations
 	// text = regexp.MustCompile(`\s+([,.:;!?])`).ReplaceAllString(text, "$1")
 	// text = regexp.MustCompile(`([,.:;!?])([A-Za-z0-9])`).ReplaceAllString(text, "$1 $2")
@@ -45,7 +54,7 @@ func ProcessPunctuation(tokens []string) []string {
 	// // text = strings.TrimSpace(text)
 
 	// return strings.Fields(text)
-}
+// }
 
 
 
