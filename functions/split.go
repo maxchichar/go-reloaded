@@ -1,23 +1,20 @@
 package functions
 
 import (
-	"strings"
-	"unicode"
+	"regexp"
 )
 
-func is_space(r rune) bool {
-	return unicode.IsSpace(r)
-}
+var tokenRegex = regexp.MustCompile(`\([^)]+\)|\S+`)
 
-func SplitElement(word string) []string {
-	if word == ""{
+func SplitElement(text string) []string {
+	if len(text) == 0 {
 		return []string{}
 	}
 
-	return strings.FieldsFunc(word, is_space)
+	return tokenRegex.FindAllString(text, -1)
 }
 
-// minimal method
+// minimal method, if i'm not handling (up,n)
 /*
 func splitText(text string) []string {
 	return strings.FieldsFunc(text, unicode.IsSpace)
